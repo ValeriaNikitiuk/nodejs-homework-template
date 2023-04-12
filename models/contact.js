@@ -18,7 +18,7 @@ const contactSchema = new Schema(
             type: Boolean,
             default: false,
         },
-    }, {versionKey: false, timestamps:true}
+    }, {versionKey: false}
 );
 
 contactSchema.post("save", mongooseErrorr);
@@ -26,9 +26,9 @@ contactSchema.post("save", mongooseErrorr);
 
 
 const addShema = Joi.object({
-  name: Joi.string().required(),
-  phone: Joi.string().required(),
-  email: Joi.string().required(),
+  name: Joi.string(),
+  phone: Joi.string(),
+  email: Joi.string(),
 });
 
 const updateShema = Joi.object({
