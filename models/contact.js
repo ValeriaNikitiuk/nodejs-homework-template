@@ -6,12 +6,10 @@ const contactSchema = new Schema(
     {
         name: {
             type: String,
-         
             required: [true, 'Set name for contact'],
         },
         email: {
-            type: String,
-          
+            type: String,      
             
         },
         phone: {
@@ -30,9 +28,9 @@ contactSchema.post("create", mongooseErrorr);
 
 
 const addShema = Joi.object({
-  name: Joi.string().required,
-  phone: Joi.string().required,
-  email: Joi.string().required,
+  name: Joi.string().required(),
+  phone: Joi.string().required(),
+  email: Joi.string().required(),
 });
 
 const updateShema = Joi.object({
