@@ -12,17 +12,17 @@ const validateBody = schema => {
 
         const existingEmailContact = await Contact.findOne({ email });
         if (existingEmailContact) {
-            return next(createHttpError(400, 'Email already exists'));
+            return next(createHttpError(400, 'missing required email field'));
             }
             
         const existingNameContact = await Contact.findOne({ name });
         if (existingNameContact) {
-            return next(createHttpError(400, 'Name already exists'));
+            return next(createHttpError(400, 'missing required name field'));
         }
 
         const existingPhoneContact = await Contact.findOne({ phone });
         if (existingPhoneContact) {
-            return next(createHttpError(400, 'Phone already exists'));
+            return next(createHttpError(400, 'missing required phone field'));
         }
 
         next();
