@@ -3,6 +3,7 @@ const createHttpError = require('../helpers/HttpError');
 const { User } = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { ConnectionStates } = require('mongoose');
 
 const { SECRET_KEY } = process.env;
 
@@ -37,14 +38,36 @@ const login = async (req, res) => {
     }
 
     const token = jwt.sign(payload, SECRET_KEY, {expiresIn: '23h'});
-    
+    await User.findByIdAndUpdate(user._id, { token });
+
     res.json({
         token,
     })
+}
+
+const getCurrent = async (req, res) => {
+   
+    if (!req.user) {
+        throw createHttpError(401, 'Not authorized');
+    }
+    const { email, subscription } = req.user;
+
+    res.status(200).json({
+        email,
+        subscription
+    });
+};
+
+const logOut = async (req, res) => {
+    const { _id } = req.user;
+    await User.findByIdAndUpdate(_id, { token: "" });
+    res.status(204).json()
 }
 
 
 module.exports = {
     register: ctrlWrapper(register),
     login: ctrlWrapper(login),
+    getCurrent: ctrlWrapper(getCurrent),
+    logOut: ctrlWrapper(logOut),
 }
