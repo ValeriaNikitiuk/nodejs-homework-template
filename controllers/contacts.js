@@ -6,8 +6,11 @@ const ctrlWrapper = require('../utils/ctrlWrapper');
 
 
 
-const getContact =  async (req, res) => {
-    const result = await Contact.find();
+const getContact = async (req, res) => {
+  const { _id: owner } = req.user;
+  const { page = 1, limit = 10 } = req.query;
+    const skip = (page - 1) * limit;
+    const result = await Contact.find({ owner }, { _id: 0, limit: 0, skip: 0 }).skip(skip).limit(limit);
     res.json(result);
   
 };
@@ -27,8 +30,9 @@ const getContactId = async (req, res) => {
 const postContact = async (req, res) => {
 if (!Object.keys(req.body).length) {
       throw createHttpError(400, 'missing fields');
-    }
-    const result = await Contact.create(req.body);
+  }
+  const { _id: owner } = req.user;
+  const result = await Contact.create({ ...req.body, owner });
     res.status(201).json(result);
   
 };
