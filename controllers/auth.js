@@ -6,6 +6,7 @@ const { User } = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const gravatar = require('gravatar');
+const Jimp = require('jimp');
 
 const { ConnectionStates } = require('mongoose');
 
@@ -72,10 +73,16 @@ const logOut = async (req, res) => {
 const updateAvatar = async (req, res) => {
     const { _id } = req.user;
     const { path: tempUpload, filename } = req.file;
-    const resultUpload = path.join(avatarsDir, filename);
+    const avatarName = `${_id}_${filename}`;
+    const resultUpload = path.join(avatarsDir, avatarName);
     await fs.rename(tempUpload, resultUpload);
-    const avatarURL = path.join('avatars', filename);
-    await User.finbByIdAndUpdate(_id, {avatarURL});
+
+ const avatar = await Jimp.read(resultUpload);
+    await avatar.resize(250, 250);
+    await avatar.write(resultUpload);
+    
+    const avatarURL = path.join('avatars', avatarName);
+    await User.findByIdAndUpdate(_id, {avatarURL});
 
     res.json({avatarURL});
 }
