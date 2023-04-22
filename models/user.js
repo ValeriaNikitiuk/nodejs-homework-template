@@ -22,7 +22,13 @@ const userSchema = new Schema({
         type: String,
         default: null,
     },
-}, { versionKey: false });
+   
+    avatarURL: {
+        type: String,
+
+    },
+},
+{ versionKey: false });
 
 userSchema.post("create", mongooseErrorr);
 
