@@ -20,7 +20,7 @@ const avatarsDir = path.join(__dirname, '../', 'public', 'avatars');
 
 const register = async (req, res) => {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({email});
     if (user) {
         throw createHttpError(409, 'Email in use');
     }
@@ -31,7 +31,7 @@ const register = async (req, res) => {
     const result = await User.create({ ...req.body, password: hashPassword, avatarURL, verificationToken });
     const verifyEmail = {
         to: email,
-        subject: "Verifi Email",
+        subject: "Verify Email",
         html: `<a target="_blank" href="${BASE_URL}/users/verify/${verificationToken}">Click verify email</a>`
     }
     await sendEmail(verifyEmail);
