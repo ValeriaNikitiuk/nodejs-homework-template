@@ -8,7 +8,7 @@ const upload = require('../../middlewares/upload');
 
 
 router.post('/register', validateBody(schemas.registerShema), ctrl.register);
-router.get('verify/:verificationToken', ctrl.verify);
+router.get('/auth/verify/:verificationToken', ctrl.verify);
 router.post('/users/verify', validateBody(schemas.emailSchema), ctrl.resendVerifyEmail);
 
 router.post('/login', validateBody(schemas.loginSchema), ctrl.login);
