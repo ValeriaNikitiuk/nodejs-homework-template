@@ -4,7 +4,7 @@ require("dotenv").config();
 
 const nodemailerConfig = {
   host: 'smtp.meta.ua',
-  port: 466,
+  port: 465,
   secure: true,
   auth: {
     user: 'leraovod@meta.ua',
